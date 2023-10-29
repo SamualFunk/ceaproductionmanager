@@ -1,0 +1,27 @@
+{
+    'name': 'CEA Production Cycle Planner',
+    'version': '1.0',
+    'summary': 'To Track and Detail Controlled Environment Agriculture Food Production',
+    'description': '',
+    'author': 'Samual Funk',
+    'license': 'AGPL-3',
+    'category': 'Agriculture',
+    'depends': ['mail', 'product'],
+    'data': [
+        'security/ir.model.access.csv',
+        'data/sequence_data.xml',
+        'views/production_order.xml',
+        'views/cultivar_bom.xml',
+        'views/menu_views.xml',
+        'views/cultivar_stages.xml',
+        'views/system_specifications_view.xml',
+        'views/system_logs_view.xml',
+        'views/cultivar_lifecycle_views.xml',
+        'views/nutrient_management_views.xml',
+        'wizard/close_confirmation_view.xml',
+        'wizard/register_harvest_view.xml',
+        'wizard/register_loss_view.xml',
+        'views/harvest_logs_view.xml',
+        'views/loss_logs_view.xml',
+    ]
+}

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_cultivar_stages" model="ir.actions.act_window">
+        <field name="name">Cultivar Stages</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">cultivar.stages</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_cultivar_stages_form" model="ir.ui.view">
+        <field name="name">cultivar.stages.form</field>
+        <field name="model">cultivar.stages</field>
+        <field name="arch" type="xml">
+            <form>
+                <header string="Cultivar Stage">
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="production_order_id"
+                                   attrs="{'invisible': [('production_order_id', '=', False)]}"/>
+                            <field name="cultivar_profile_id"/>
+                            <field name="cultivar_quantity"/>
+                            <field name="stage"/>
+                            <field name="description"/>
+                            <field name="system_id"/>
+                            <field name="parent_system_id"
+                                   attrs="{'invisible': [('parent_system_id', '=', False)]}"/>
+                            <field name="days"/>
+                            <field name="minutes" widget="float_time"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cultivar_stages_tree" model="ir.ui.view">
+        <field name="name">cultivar.stages.tree</field>
+        <field name="model">cultivar.stages</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="stage" force_save="1"/>
+                <field name="description" invisible="1" force_save="1"/>
+                <field name="system_id" widget="badge" force_save="1"/>
+                <field name="parent_system_id" invisible="1" force_save="1"/>
+                <field name="cultivar_quantity" invisible="1" force_save="1"/>
+                <field name="cultivar_profile_id" invisible="1" force_save="1"/>
+                <field name="days" force_save="1"/>
+                <field name="minutes" widget="float_time" force_save="1"/>
+                <button name="action_start" string="Start Stage" type="object" icon="fa-leaf"
+                        attrs="{'invisible': ['|', '|', '|', ('state', '=', 'completed'), ('state', '=', 'in_progress'),
+                        ('state', '=', 'canceled'), ('state', '=', 'closed')]}"/>
+                <button name="action_set_done" string="End Stage" type="object"
+                        icon="fa-check"
+                        attrs="{'invisible': ['|', '|', '|', ('state', '=', 'completed'), ('state', '=', 'pending'),
+                        ('state', '=', 'canceled'), ('state', '=', 'closed')]}"/>
+                <button name="action_set_harvest" string="Harvest" type="object"
+                        icon="fa-check"
+                        attrs="{'invisible': ['|', '|', '|', '|', ('state', '=', 'completed'), ('state', '=', 'pending'),
+                         ('state', '=', 'canceled'), ('state', '=', 'in_progress'), ('state', '=', 'closed')]}"/>
+                <field name="start_date"/>
+                <field name="est_end_date"/>
+                <field name="def_end_date"/>
+                <field name="state" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+
+    <menuitem id="menu_cultivar_stages_form_action"
+              parent="menu_production_orders"
+              action="action_cultivar_stages"
+              sequence="16"/>
+</odoo>

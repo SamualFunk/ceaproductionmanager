@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="sequence_production_order" model="ir.sequence">
+            <field name="name">Production Order Sequence</field>
+            <field name="code">production.order</field>
+            <field name="prefix">CPO/</field>
+            <field name="padding">5</field>
+        </record>
+
+        <record id="sequence_system_logs" model="ir.sequence">
+            <field name="name">System Logs Sequence</field>
+            <field name="code">system.logs</field>
+            <field name="prefix">REC/</field>
+            <field name="padding">3</field>
+        </record>
+
+        <record id="sequence_lot_number" model="ir.sequence">
+            <field name="name">System Logs Sequence</field>
+            <field name="code">system.logs</field>
+            <field name="prefix">REC/</field>
+            <field name="padding">3</field>
+        </record>
+
+    </data>
+</odoo>

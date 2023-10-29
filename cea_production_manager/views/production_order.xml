@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_crop_production_orders" model="ir.actions.act_window">
+        <field name="name">Production Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">production.model</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_production_order_form" model="ir.ui.view">
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="button_confirm"
+                            attrs="{'invisible': ['!', ('state', '=', 'draft')]}"
+                            type="object" string="Confirm" class="btn btn-primary"/>
+                    <button name="button_close_order"
+                            attrs="{'invisible': ['|', '|', '|', ('state', '=', 'draft'), ('state', '=', 'canceled'),
+                    ('state', '=', 'completed'), ('state', '=', 'closed')]}"
+                            type="object" string="Close Order" class="btn btn-primary"/>
+                    <button name="button_cancel" type="object" string="Cancel" class="btn btn-danger"
+                            attrs="{'invisible': [('state', '!=', 'confirmed')]}"/>
+                </header>
+                <header>
+                    <div class="o_banner">
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,confirmed,completed,canceled"/>
+                    </div>
+                </header>
+                <statusbar>
+                    <status status="canceled" string="Canceled" statusbar_visible="state=='canceled'"/>
+                </statusbar>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="ref" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Cultivar And System Information">
+                            <field name="cultivar_bom_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="cultivar_tags" widget="many2many_tags"/>
+                            <field name="status" widget="badge"/>
+                            <field name="current_system_id" widget="badge"/>
+                            <field name="final_system_id" widget="badge"/>
+                        </group>
+                        <group>
+                            <field name="cultivar_image" widget="image" options='{"size": [275, 275]}'/>
+                        </group>
+                    </group>
+                    <group string="Cultivar Quantity and Schedule Manager" class="o_group">
+                        <div class="o_column">
+                            <group string="Quantity">
+                                <field name="quantity_ordered" class="w-auto"
+                                       attrs="{'readonly': [ '|', ('cultivar_bom_id', '=', False), ('state', '!=', 'draft')]}"/>
+                                <field name="quantity_current" class="oe_inline"
+                                       attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                                <field name="quantity_lost" attrs="{'invisible': [('quantity_lost', '=', 0)]}"/>
+                                <field name="quantity_harvested"
+                                       attrs="{'invisible': [('quantity_harvested', '=', 0)]}"/>
+                                <field name="harvest_unit" widget="badge"
+                                       attrs="{'invisible': [('quantity_harvested', '=', 0)]}"/>
+                            </group>
+                            <group string="Harvest And Loss">
+                                <button name="button_register_harvest" type="object"
+                                        string="Harvest"
+                                        attrs="{'invisible': ['|', '|', ('state', '!=', 'confirmed'), ('status', '!=', 'Harvest'), ('quantity_current', '=', 0)]}"
+                                        class="btn btn-success"/>
+                                <button name="button_register_loss" type="object" string="Cultivar Loss"
+                                        attrs="{'invisible': ['|', ('state', '!=', 'confirmed'),  ('quantity_current', '=', 0)]}"
+                                        class="btn btn-primary"/>
+                            </group>
+                        </div>
+                        <group string="Production Scheduler">
+                            <field name="days_to_maturity"/>
+                            <field name="scheduled_date"
+                                   attrs="{'readonly': [ '|', ('state', '!=', 'draft'), ('cultivar_bom_id', '=', False)]}"/>
+                            <field name="estimated_harvest_date"/>
+                            <field name="stage_end_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Production Stages">
+                            <field name="stages_id" attrs="{'readonly': [('cultivar_bom_id', '=', False)]}"/>
+                        </page>
+                        <page string="Harvest Log">
+                            <field name="harvest_logs_id"/>
+                        </page>
+                        <page string="Loss Log">
+                            <field name="loss_logs_id"/>
+                        </page>
+                    </notebook>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_production_order_tree" model="ir.ui.view">
+        <field name="name">production.order.tree</field>
+        <field name="model">production.model</field>
+        <field name="arch" type="xml">
+            <tree string="Production Orders" default_order="ref desc">
+                <field name="ref"/>
+                <field name="cultivar_bom_id"/>
+                <field name="quantity_current"/>
+
+                <field name="status" widget="badge"/>
+                <field name="stage_end_date"/>
+                <field name="state" widget="badge"/>
+                <field name="estimated_harvest_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_production_order_search" model="ir.ui.view">
+        <field name="name">production.order.search</field>
+        <field name="model">production.model</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="state"/>
+                <filter name="confirmed_orders" string="Confirmed Orders" domain="[('state', '=', 'confirmed')]"/>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="menu_production_orders_form_action"
+              parent="menu_production_orders"
+              action="action_crop_production_orders"
+              sequence="13"/>
+
+</odoo>

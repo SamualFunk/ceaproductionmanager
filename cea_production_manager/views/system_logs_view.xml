@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_system_logs" model="ir.actions.act_window">
+        <field name="name">System Logs</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">system.logs</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_system_logs_tree" model="ir.ui.view">
+        <field name="name">system.logs.tree</field>
+        <field name="model">system.logs</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="ref"/>
+                <field name="name"/>
+                <field name="date_created"/>
+                <field name="ph"/>
+                <field name="ec"/>
+                <field name="tan"/>
+                <field name="nitrite"/>
+                <field name="nitrate"/>
+                <field name="water_temp"/>
+                <field name="notes"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_system_logs_form" model="ir.ui.view">
+        <field name="name">system.logs.form</field>
+        <field name="model">system.logs</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="ref" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="date_created"/>
+                            <field name="ph"/>
+                            <field name="ec"/>
+                        </group>
+                        <group>
+                            <field name="tan"/>
+                            <field name="nitrite"/>
+                            <field name="nitrate"/>
+                            <field name="water_temp"/>
+                            <field name="notes"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_system_logs_action"
+              parent="menu_system_specifications"
+              action="action_system_logs"
+              sequence="18"/>
+</odoo>

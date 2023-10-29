@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_nutrient_management" model="ir.actions.act_window">
+        <field name="name">Nutrient Management</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">additives.manager</field>
+        <field name="view_mode">tree,form,kanban</field>
+    </record>
+
+    <record id="view_additives_manager_form" model="ir.ui.view">
+        <field name="name">additives.manager.form</field>
+        <field name="model">additives.manager</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <div>
+                            <group>
+                                <field name="date"/>
+                                <group string="Salt Information">
+                                    <field name="fertilizer_salt_profile_id" widget="selection"/>
+                                    <field name="formula"/>
+                                    <field name="purity" widget="percentage"/>
+                                </group>
+                            </group>
+                            <div>
+                                <group string="Element To Solve">
+                                    <field name="element_relation_id" widget="selection"/>
+                                    <field name="element_name"/>
+                                    <field name="target_ppm"/>
+                                </group>
+                            </div>
+                        </div>
+                        <group>
+                            <group string="Additions Calculator">
+                                <field name="solve_mg_liter"/>
+                                <field name="solve_ppm"/>
+                                <field name="atomic_weight"/>
+                                <field name="molecular_weight"/>
+                                <field name="mg_liter"/>
+                                <field name="ppm"/>
+                                <button name="action_compute_mg_liter" string="Compute Mg/L" type="object"
+                                        icon="fa-leaf" attrs="{'invisible': [('solve_mg_liter', '=', False)]}"/>
+                                <button name="action_compute_ppm" string="Compute PPM" type="object" icon="fa-leaf"
+                                        attrs="{'invisible': [('solve_ppm', '=', False)]}"/>
+                                <button name="action_log_additions" string="Log Additions" type="object"
+                                        class="oe_highlight"/>
+                            </group>
+                        </group>
+                        <group string="Concentation and Storage Information">
+                            <field name="concentration"/>
+                            <field name="water_quantity"/>
+                            <field name="water_units"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Fertilizer Content">
+                            <field name="salt_id" nolabel="1"/>
+                        </page>
+                        <page string="Element Log">
+                            <field name="element_quantity_id"/>
+                        </page>
+                    </notebook>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_additives_manager_tree" model="ir.ui.view">
+        <field name="name">additives.manager.tree</field>
+        <field name="model">additives.manager</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_fertilizer_salt_profile" model="ir.actions.act_window">
+        <field name="name">Fertilizer Salt Profile</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">fertilizer.salt.profile</field>
+        <field name="view_mode">tree,form,kanban</field>
+    </record>
+
+    <record id="view_fertilizer_salt_profile_form" model="ir.ui.view">
+        <field name="name">fertilizer.salt.profile.form</field>
+        <field name="model">fertilizer.salt.profile</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="product_id" string="Fertilizer Salt"/>
+                        <h1>
+                            <field name="product_id"/>
+                        </h1>
+                    </div>
+                    <div>
+                        <group>
+                            <group string="Salt Information">
+                                <field name="formula"/>
+                                <field name="description"/>
+                                <field name="purity" widget="percentage"/>
+                                <field name="solubility"/>
+                            </group>
+                            <div>
+                                <group string="Molecular Information">
+                                    <field name="override"/>
+                                    <field name="molecular_weight_override"
+                                           attrs="{'invisible': [('override', '=', False)]}"/>
+                                    <field name="molecular_weight" attrs="{'invisible': [('override', '=', True)]}"/>
+                                </group>
+                            </div>
+                        </group>
+                    </div>
+                    <notebook>
+                        <page string="Element Content">
+                            <field name="elements_id" nolabel="1"/>
+                        </page>
+                    </notebook>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_fertilizer_salt_profile" model="ir.ui.view">
+        <field name="name">fertilizer.salt.profile.tree</field>
+        <field name="model">fertilizer.salt.profile</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="product_id"/>
+                <field name="formula"/>
+                <field name="description"/>
+                <field name="molecular_weight"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_salt_consumption_tree" model="ir.ui.view">
+        <field name="name">salt.consumption.tree</field>
+        <field name="model">salt.consumption</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="recipe_id" string="Recipe" invisible="1"/>
+                <field name="salt_id"/>
+                <field name="formula"/>
+                <field name="quantity"/>
+                <field name="solubility"/>
+                <field name="solubility_levels"/>
+                <field name="adjusted_quantity"/>
+                <field name="unit_of_measure"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="view_salt_consumption_form" model="ir.ui.view">
+        <field name="name">salt.consumption.form</field>
+        <field name="model">salt.consumption</field>
+        <field name="arch" type="xml">
+            <form js_class="production_cycle.custom_script">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="salt_id" string="Fertilizer Salt"/>
+                        <h1>
+                            <field name="salt_id"/>
+                        </h1>
+                    </div>
+                    <div>
+                        <group>
+                            <field name="formula"/>
+                            <field name="quantity"/>
+                            <field name="concentration"/>
+                            <field name="water_quantity"/>
+                            <field name="solubility"/>
+                            <field name="solubility_levels"/>
+                            <field name="water_units"/>
+                            <field name="adjusted_quantity"/>
+                            <field name="unit_of_measure"/>
+                        </group>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_element_profile_tree" model="ir.ui.view">
+        <field name="name">element.profile.tree</field>
+        <field name="model">element.profile</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="element_selection"/>
+                <field name="symbol"/>
+                <field name="amount_present"/>
+                <field name="atomic_weight"/>
+                <field name="total_atomic_mass"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_element_profile_form" model="ir.ui.view">
+        <field name="name">element.profile.form</field>
+        <field name="model">element.profile</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="element_selection" string="Element Name"/>
+                        <h1>
+                            <field name="element_selection"/>
+                        </h1>
+                    </div>
+                    <div>
+                        <group>
+                            <field name="symbol"/>
+                            <field name="amount_present"/>
+                            <field name="atomic_weight"/>
+                            <field name="total_atomic_mass"/>
+                        </group>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_element_quantity_tree" model="ir.ui.view">
+        <field name="name">element.quantity.tree</field>
+        <field name="model">element.quantity</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="symbol"/>
+                <field name="salt"/>
+                <field name="target_ppm"/>
+                <field name="ppm_added"/>
+                <field name="ppm_needed"/>
+                <field name="mg_added"/>
+                <field name="purity_adjustment"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_element_quantity_form" model="ir.ui.view">
+        <field name="name">element.quantity.form</field>
+        <field name="model">element.quantity</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="name"/>
+                <field name="symbol"/>
+                <field name="salt"/>
+                <field name="target_ppm"/>
+                <field name="ppm_added"/>
+                <field name="ppm_needed"/>
+                <field name="mg_added"/>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_nutrient_management_form_action"
+              parent="menu_nutrient_management"
+              action="action_nutrient_management"
+              sequence="14"/>
+
+    <menuitem id="menu_fertilizer_salt_profile_form_action"
+              parent="menu_nutrient_management"
+              action="action_fertilizer_salt_profile"
+              sequence="16"/>
+
+    <record id="view_fertilizer_salt_profile_search" model="ir.ui.view">
+        <field name="name">fertilizer.salt.profile.search</field>
+        <field name="model">fertilizer.salt.profile</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Name" name="product_id"/>
+                <field name="product_id" string="Product" widget="search"/>
+            </search>
+        </field>
+    </record>
+
+
+</odoo>

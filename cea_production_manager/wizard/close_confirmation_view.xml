@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="view_close_confirmation" model="ir.ui.view">
+        <field name="name">close.confirmation.form</field>
+        <field name="model">close.confirmation</field>
+        <field name="arch" type="xml">
+            <form>
+                <header string="Close Order Confirmation">
+                </header>
+                <sheet>
+                    <field name="production_order_id"/>
+                    <button name="confirm_close_order" type="object" string="Confirm Close Order"/>
+                </sheet>
+                <footer>
+                    <button name="object_save" invisible="1"/>
+                    <button name="object_discard" invisible="1"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

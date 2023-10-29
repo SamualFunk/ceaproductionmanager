@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_harvest_logs" model="ir.actions.act_window">
+        <field name="name">Harvest Logs</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">harvest.logs</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="view_harvest_logs_tree" model="ir.ui.view">
+        <field name="name">harvest.logs.tree</field>
+        <field name="model">harvest.logs</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="production_order_id"/>
+                <field name="cultivar_profile_id"/>
+                <field name="system_id"/>
+                <field name="date_harvested"/>
+                <field name="quantity_harvested"/>
+                <field name="harvest_uom"/>
+                <field name="notes"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <menuitem id="menu_harvest_logs_action"
+              parent="menu_production_orders"
+              action="action_harvest_logs"
+              sequence="20"/>
+</odoo>

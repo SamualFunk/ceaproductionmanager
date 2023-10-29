@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_cultivar_lifecycle" model="ir.actions.act_window">
+        <field name="name">Cultivar Lifecycle</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">cultivar.lifecycle</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_cultivar_lifecycle_form" model="ir.ui.view">
+        <field name="name">cultivar.lifecycle.form</field>
+        <field name="model">cultivar.lifecycle</field>
+        <field name="arch" type="xml">
+            <form>
+                <header string="Cultivar Lifecycle">
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="stage"/>
+                            <field name="cultivar_bom_id" invisible="1"/>
+                            <field name="description"/>
+                            <field name="system_id"/>
+                            <field name="duration_category" widget="badge"/>
+                            <field name="days"
+                                   attrs="{'invisible': ['|', ('duration_category', '=', 'labor'), ('duration_category', '=', None)]}"/>
+                            <field name="minutes"
+                                   attrs="{'invisible': ['|', ('duration_category', '=', 'passive'), ('duration_category', '=', None)]}"/>
+                            <field name="notes"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cultivar_lifecycle_tree" model="ir.ui.view">
+        <field name="name">cultivar.lifecycle.tree</field>
+        <field name="model">cultivar.lifecycle</field>
+        <field name="arch" type="xml">
+            <tree string="Production Operations Designer" multi_edit="1">
+                <field name="stage"/>
+                <field name="description" invisible="1"/>
+                <field name="cultivar_bom_id" invisible="1"/>
+                <field name="system_id"/>
+                <field name="duration_category"/>
+                <field name="days"
+                       attrs="{'invisible': ['|', ('duration_category', '=', 'labor'), ('duration_category', '=', None)]}"/>
+                <field name="minutes" widget="float_time"
+                       attrs="{'invisible': ['|', ('duration_category', '=', 'passive'), ('duration_category', '=', None)]}"/>
+                <field name="notes"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_loss_logs" model="ir.actions.act_window">
+        <field name="name">Loss Logs</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">loss.logs</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="view_loss_logs_tree" model="ir.ui.view">
+        <field name="name">loss.logs.tree</field>
+        <field name="model">loss.logs</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="production_order_id"/>
+                <field name="cultivar_profile_id"/>
+                <field name="system_id"/>
+                <field name="date_lost"/>
+                <field name="quantity_lost"/>
+                <field name="notes"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <menuitem id="menu_loss_logs_action"
+              parent="menu_production_orders"
+              action="action_loss_logs"
+              sequence="22"/>
+</odoo>

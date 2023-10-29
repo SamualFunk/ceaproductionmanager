@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_system_specifications" model="ir.actions.act_window">
+        <field name="name">System Specifications</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">system.specifications</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_system_specifications_tree" model="ir.ui.view">
+        <field name="name">system.specifications.tree</field>
+        <field name="model">system.specifications</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="parent_system_id"
+                       attrs="{'invisible': [ '|', '|', ('work_center_category', '=', 'parent_system'),
+                                    ('work_center_category', '=', 'work_center'),
+                                    ('work_center_category', '=', 'aquaculture')]}"/>
+                <field name="work_center_category"/>
+                <field name="tag_id" widget="many2many_tags"/>
+                <field name="unit_planting_capacity"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_system_specifications_form" model="ir.ui.view">
+        <field name="name">system.specifications.form</field>
+        <field name="model">system.specifications</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="work_center_category"/>
+                            <field name="parent_system_id"
+                                   attrs="{'invisible': [ '|', '|', ('work_center_category', '=', 'parent_system'),
+                                    ('work_center_category', '=', 'work_center'),
+                                    ('work_center_category', '=', 'aquaculture')]}"/>
+                            <field name="is_parent" invisible="1" force_save="1"/>
+                            <field name="is_child" invisible="1" force_save="1"/>
+                            <field name="image" widget="image" options='{"size": [400, 400]}'/>
+                            <field name="tag_id" widget="many2many_tags"/>
+                            <field name="vendor_id"/>
+                        </group>
+                        <div>
+                            <group>
+                                <group string="System General Information"
+                                       attrs="{'invisible': [ '|', ('work_center_category', '=', 'parent_system_id'), ('work_center_category', '=', 'work_center')]}">
+                                    <field name="system_volume"
+                                           attrs="{'invisible': [('work_center_category', '=', 'work_center')]}"/>
+                                    <field name="system_volume_units"
+                                           attrs="{'invisible': [('work_center_category', '=', 'work_center')]}"/>
+                                    <field name="system_area"
+                                           attrs="{'invisible': [('work_center_category', '=', 'work_center')]}"/>
+                                    <field name="system_area_units"
+                                           attrs="{'invisible': [('work_center_category', '=', 'work_center')]}"/>
+                                </group>
+                                <group string="System Planting Information"
+                                       attrs="{'invisible': [ '|', ('work_center_category', '=', 'aquaculture_system'), ('work_center_category', '=', 'work_center')]}">
+                                    <field name="system_units"
+                                           attrs="{'invisible': [ '|', ('work_center_category', '=', 'work_center'), ('work_center_category', '=', 'aquaculture_system')]}"/>
+                                    <field name="unit_planting_capacity"
+                                           attrs="{'invisible': [ '|', ('work_center_category', '=', 'work_center'), ('work_center_category', '=', 'aquaculture_system')]}"/>
+                                    <field name="total_system_planting_capacity"
+                                           attrs="{'invisible': [ '|', ('work_center_category', '=', 'work_center'), ('work_center_category', '=', 'aquaculture_system')]}"/>
+                                    <field name="current_system_planted"
+                                           attrs="{'invisible': [ '|', ('work_center_category', '=', 'work_center'), ('work_center_category', '=', 'aquaculture_system')]}"/>
+                                    <field name="current_system_capacity" widget="percentpie"
+                                           attrs="{'invisible': [ '|', ('work_center_category', '=', 'work_center'), ('work_center_category', '=', 'aquaculture_system')]}"/>
+                                </group>
+                            </group>
+                        </div>
+                    </group>
+                    <notebook>
+                        <page string="System Logs"
+                              attrs="{'invisible': [ '|', ('work_center_category', '=', 'work_center'), ('is_child', '=', True)]}">
+                            <field name="logs_id"/>
+                        </page>
+                        <page string="Production Orders"
+                              attrs="{'invisible': [('work_center_category', '=', 'aquaculture_system')]}">
+                            <field name="stages_id" attrs="{'invisible': [('is_parent', '=', True)]}"/>
+                            <field name="parent_stages_id" attrs="{'invisible': [('is_parent', '=', False)]}"/>
+                        </page>
+                    </notebook>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_system_specifications_action"
+              parent="menu_system_specifications"
+              action="action_system_specifications"
+              sequence="17"/>
+</odoo>
